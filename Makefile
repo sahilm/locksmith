@@ -17,7 +17,7 @@ goimports: setup
 
 .PHONY: lint
 lint: setup
-	gometalinter ./... --enable=goimports --disable=golint --vendor -t
+	gometalinter ./... --enable=goimports --disable=golint --disable=errcheck --vendor -t
 
 .PHONY: check
 check: setup
