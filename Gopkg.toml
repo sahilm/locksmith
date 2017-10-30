@@ -10,4 +10,4 @@
 
 [[constraint]]
   name = "github.com/jroimartin/gocui"
-  version = "0.3.0"
+  branch = "master"
