@@ -19,6 +19,13 @@ goimports: setup
 lint: setup
 	gometalinter ./... --enable=goimports --disable=golint --vendor -t
 
+.PHONY: check
+check: setup
+	gometalinter ./... --disable-all --enable=vet --enable=vetshadow --enable=goimports --vendor -t
+
+.PHONY: ci
+ci: setup check test
+
 .PHONY: install
 install: setup
 	go install
@@ -55,3 +62,20 @@ setup: tools vendor
 
 updatedeps:
 	dep ensure -update
+
+BINARY := locksmith
+VERSION ?= latest
+PLATFORMS := darwin/amd64 linux/amd64 windows/amd64
+
+temp = $(subst /, ,$@)
+os = $(word 1, $(temp))
+arch = $(word 2, $(temp))
+
+.PHONY: $(PLATFORMS)
+$(PLATFORMS): setup
+	mkdir -p $(CURDIR)/release
+	CGO_ENABLED=0 GOOS=$(os) GOARCH=$(arch) go build -ldflags="-X main.version=$(VERSION)" \
+	-o release/$(BINARY)-v$(VERSION)-$(os)-$(arch)
+
+.PHONY: release
+release: $(PLATFORMS)
