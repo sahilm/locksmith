@@ -1,3 +1,15 @@
 language: go
 go:
-- '1.x'
+- 1.x
+script:
+- make ci
+before_deploy:
+- make VERSION=${TRAVIS_TAG} release -j3
+deploy:
+  provider: releases
+  api_key:
+    secure: SCvEMC1j4XOEcfOFLknTM3+nQsG+bgyBxDhNvHAorZlW+RkTFgpbR7fv/C1G3sa0mpnyVouKj451Qd+nAb9xTVJchK5Rf11z7c1rbzdqMbzzkdhVk9AqLJHtrzZia+mRvWtOYrTLhoqwySi7s6xVwpDO6OqcyYC2uV/GAp4IIoGSULNrCPvnvaVY9lYuKPx+LzZRezDapSi7iTddBduJnUoa/Ctqi4rhuN9AWaI35vU5l8w7S7xETbVurMG3oscX5Ac1hDFbjYkT8CgT3quYjmgDZehMEAEEPXHzzugbsrSgoGrnRg0z50vAY+bUGt/1APCaKCPrZLuv2lCnTQR+okQzgv+mjxPCTq8f9p+tNvIN3EqFQ0pfv90bfRIXeGLLDxArXLcXm170tb+qua0joZp9VTWhTQyrcv5v19NVFyldrZ+4Jl0VPRi75ZWw1JC9JQxqSgvoF0TzIizdGxIlWnrCLeXSBNByzbrRT0QfUAJSFzGyV4Nv4rdtdlqKqfQhTw5QtR3buNMAuxkVw5COiNQRBnvzYTPKY6AoieIp7k8F1vMcGf+uN1jceqrXv0FiJXOLGYHNhJqB5j8FoR0FhkQPofAp+Js5ge757Va+YYXGKR8qApQXfeIXXRhx4iTZjMgvytR2lBeI4g7FlMI3NWrdeGp/ICQIvDbx/PdNc1c=
+  file_glob: true
+  skip_cleanup: true
+  on:
+    tags: true
