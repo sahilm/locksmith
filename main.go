@@ -46,7 +46,11 @@ func layout(g *gocui.Gui) error {
 		if err != gocui.ErrUnknownView {
 			return err
 		}
-		files, err := git.ListFiles("./.git", 1*time.Second)
+		repo := git.Repo{
+			Dir:     "./",
+			Timeout: 1 * time.Second,
+		}
+		files, err := repo.ListFiles()
 		if err != nil {
 			return err
 		}
